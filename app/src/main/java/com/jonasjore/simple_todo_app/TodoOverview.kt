@@ -35,7 +35,7 @@ fun TodoOverview(addNewTodoRoute: () -> Unit, onBack: () -> Unit) {
                 Icon(Icons.Default.Add, "add todos")
             }
         }) {
-        Surface(color = MaterialTheme.colors.surface) {
+        Surface {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
