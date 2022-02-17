@@ -1,6 +1,6 @@
 package com.jonasjore.simple_todo_app
 
 object Routes {
-    val todoOverView = "todoOverview"
-    val addNewTodo = "addNewTodo"
+    const val todoOverView = "todoOverview"
+    const val addNewTodo = "addNewTodo"
 }

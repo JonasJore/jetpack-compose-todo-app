@@ -7,13 +7,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.jonasjore.simple_todo_app.ui.theme.SimpleTodoAppTheme
 
 val todoList: List<TodoTask> = listOf(
     TodoTask(isDone = false, "Gjøre lekse"),
@@ -27,7 +28,7 @@ val todoList: List<TodoTask> = listOf(
 )
 
 @Composable
-fun TodoOverview(addNewTodoRoute: () -> Unit, onBack: () -> Unit) {
+fun TodoOverviewScreen(addNewTodoRoute: () -> Unit, onBack: () -> Unit) {
     Scaffold(
         topBar = { TodoAppTopBar(onBack = onBack) },
         floatingActionButton = {
@@ -42,8 +43,17 @@ fun TodoOverview(addNewTodoRoute: () -> Unit, onBack: () -> Unit) {
                     .fillMaxHeight()
                     .verticalScroll(rememberScrollState())
             ) {
+                H3(text = "TODOs")
                 todoList.forEach { Todo(it) }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun TodoOverviewScreenPreview() {
+    SimpleTodoAppTheme {
+        TodoOverviewScreen(addNewTodoRoute = { }, onBack = { })
     }
 }

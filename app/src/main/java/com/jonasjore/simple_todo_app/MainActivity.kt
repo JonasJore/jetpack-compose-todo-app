@@ -3,20 +3,8 @@ package com.jonasjore.simple_todo_app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -45,13 +33,13 @@ fun NavigationComponent(navController: NavHostController) {
         startDestination = Routes.todoOverView
     ) {
         composable(Routes.todoOverView) {
-            TodoOverview(
+            TodoOverviewScreen(
                 addNewTodoRoute =  { navController.navigate(Routes.addNewTodo) },
                 onBack = { navController.popBackStack() }
             )
         }
         composable(Routes.addNewTodo) {
-            AddNewTodo(onBack = { navController.popBackStack() })
+            AddTodoScreen(onBack = { navController.popBackStack() })
         }
     }
 }
@@ -60,6 +48,6 @@ fun NavigationComponent(navController: NavHostController) {
 @Composable
 fun DefaultPreview() {
     SimpleTodoAppTheme {
-        TodoOverview({ }, { })
+        TodoOverviewScreen({ }, { })
     }
 }
