@@ -44,7 +44,7 @@ fun TodoOverviewScreen(addNewTodoRoute: () -> Unit, onBack: () -> Unit) {
                     .verticalScroll(rememberScrollState())
             ) {
                 H3(text = "TODOs")
-                todoList.forEach { Todo(it) }
+                todoList.forEach { TodoCard(it) }
             }
         }
     }
