@@ -34,18 +34,19 @@ fun NavigationComponent(navController: NavHostController, applicationContext: Co
         applicationContext,
         TodoDatabase::class.java, "todo_database"
     ).build()
-
+    val todoTaskDao = db.TodoTaskDao()
     NavHost(
         navController = navController,
         startDestination = Routes.todoOverView
     ) {
         composable(Routes.todoOverView) {
             TodoOverviewScreen(
+                todoTaskDao = todoTaskDao,
                 addNewTodoRoute = { navController.navigate(Routes.addNewTodo) },
             ) { navController.popBackStack() }
         }
         composable(Routes.addNewTodo) {
-            AddTodoScreen(database = db) { navController.popBackStack() }
+            AddTodoScreen(todoTaskDao = todoTaskDao) { navController.popBackStack() }
         }
     }
 }
@@ -54,6 +55,6 @@ fun NavigationComponent(navController: NavHostController, applicationContext: Co
 @Composable
 fun DefaultPreview() {
     SimpleTodoAppTheme {
-        TodoOverviewScreen({ }, { })
+        TodoOverviewScreen(addNewTodoRoute = { }, onBack = { })
     }
 }

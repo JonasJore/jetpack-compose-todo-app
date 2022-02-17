@@ -1,5 +1,6 @@
 package com.jonasjore.simple_todo_app
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,9 +13,19 @@ import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCompositionContext
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.jonasjore.simple_todo_app.ui.theme.SimpleTodoAppTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 val todoList: List<TodoTask> = listOf(
     TodoTask(isDone = false, "Gjøre lekse"),
@@ -27,8 +38,22 @@ val todoList: List<TodoTask> = listOf(
     TodoTask(isDone = true, "Lage kaffe"),
 )
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun TodoOverviewScreen(addNewTodoRoute: () -> Unit, onBack: () -> Unit) {
+fun TodoOverviewScreen(
+    todoTaskDao: TodoTaskDao? = null,
+    addNewTodoRoute: () -> Unit,
+    onBack: () -> Unit
+) {
+
+    val todos = remember {
+        mutableStateOf<List<TodoTaskEntity>?>(null)
+    }
+
+    CoroutineScope(Dispatchers.IO).launch {
+        todos.value = todoTaskDao?.getAll()
+    }
+
     Scaffold(
         topBar = { TodoAppTopBar(onBack = onBack) },
         floatingActionButton = {
@@ -44,7 +69,10 @@ fun TodoOverviewScreen(addNewTodoRoute: () -> Unit, onBack: () -> Unit) {
                     .verticalScroll(rememberScrollState())
             ) {
                 H3(text = "TODOs")
-                todoList.forEach { TodoCard(it) }
+
+                todos.value?.forEach {
+                    TodoCard(todoTask = it)
+                }
             }
         }
     }

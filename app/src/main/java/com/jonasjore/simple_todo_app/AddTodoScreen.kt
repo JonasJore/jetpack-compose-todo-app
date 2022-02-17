@@ -28,11 +28,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
-fun AddTodoScreen(database: TodoDatabase?, onBack: () -> Unit) {
+fun AddTodoScreen(
+    todoTaskDao: TodoTaskDao? = null,
+    onBack: () -> Unit
+) {
     var todoText by remember { mutableStateOf("") }
     var inputError by remember { mutableStateOf(false) }
     val context = LocalContext.current
-    val todoTaskDao = database?.TodoTaskDao()
     Scaffold(topBar = { TodoAppTopBar(onBack = onBack) }, content = {
         Surface {
             Column {
@@ -86,6 +88,6 @@ fun AddTodoScreen(database: TodoDatabase?, onBack: () -> Unit) {
 @Composable
 fun AddTodoPreview() {
     SimpleTodoAppTheme {
-        AddTodoScreen(null) { }
+        AddTodoScreen { }
     }
 }

@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.jonasjore.simple_todo_app.ui.theme.SimpleTodoAppTheme
 
 @Composable
-fun TodoCard(todoTask: TodoTask) {
+fun TodoCard(todoTask: TodoTaskEntity) {
     Card(
         shape = RoundedCornerShape(8.dp),
         backgroundColor = MaterialTheme.colors.background,
@@ -38,10 +38,12 @@ fun TodoCard(todoTask: TodoTask) {
         ) {
             Checkbox(
                 checked = isChecked,
-                onCheckedChange = { isChecked = it },
-                modifier = Modifier.padding(12.dp)
+                onCheckedChange = {
+                    isChecked = it
+                },
+                modifier = Modifier.padding(8.dp)
             )
-            Text(text = todoTask.task)
+            Text(text = todoTask.name ?: "blank")
         }
     }
 }
@@ -50,6 +52,14 @@ fun TodoCard(todoTask: TodoTask) {
 @Composable
 fun TodoPreview() {
     SimpleTodoAppTheme {
-        TodoCard(todoTask = TodoTask(isDone = true, task = "Get shit done"))
+        TodoCard(todoTask = TodoTaskEntity(isDone = true, name = "Get shit done"))
+    }
+}
+
+@Preview
+@Composable
+fun TodoNotDonePreview() {
+    SimpleTodoAppTheme {
+        TodoCard(todoTask = TodoTaskEntity(isDone = false, name = "Get more shit done"))
     }
 }
