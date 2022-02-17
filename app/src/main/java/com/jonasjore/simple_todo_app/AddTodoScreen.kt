@@ -23,16 +23,22 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jonasjore.simple_todo_app.ui.theme.SimpleTodoAppTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
-fun AddTodoScreen(onBack: () -> Unit) {
+fun AddTodoScreen(database: TodoDatabase?, onBack: () -> Unit) {
     var todoText by remember { mutableStateOf("") }
+    var inputError by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val todoTaskDao = database?.TodoTaskDao()
     Scaffold(topBar = { TodoAppTopBar(onBack = onBack) }, content = {
         Surface {
             Column {
                 H3(text = "New TODO")
                 TextField(
+                    isError = inputError,
                     value = todoText,
                     onValueChange = { todoText = it },
                     modifier = Modifier
@@ -46,7 +52,21 @@ fun AddTodoScreen(onBack: () -> Unit) {
                 ) {
                     Button(
                         onClick = {
-                            Toast.makeText(context, "something", Toast.LENGTH_SHORT).show()
+                            inputError = todoText.isBlank()
+                            if (!inputError) {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    todoTaskDao?.addTodo(
+                                        todoTaskEntity = TodoTaskEntity(
+                                            isDone = false,
+                                            name = todoText
+                                        )
+                                    )
+                                }
+                                Toast.makeText(context, "$todoText added.", Toast.LENGTH_SHORT)
+                                    .show()
+                                todoText = ""
+                            }
+
                         },
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = Color.Cyan,
@@ -66,6 +86,6 @@ fun AddTodoScreen(onBack: () -> Unit) {
 @Composable
 fun AddTodoPreview() {
     SimpleTodoAppTheme {
-        AddTodoScreen { }
+        AddTodoScreen(null) { }
     }
 }
