@@ -20,16 +20,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.jonasjore.simple_todo_app.ui.theme.SimpleTodoAppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
 fun AddTodoScreen(
-    todoTaskDao: TodoTaskDao? = null,
+    addTodo: (TodoTaskEntity) -> Unit,
     onBack: () -> Unit
 ) {
     var todoText by remember { mutableStateOf("") }
@@ -57,11 +55,11 @@ fun AddTodoScreen(
                             inputError = todoText.isBlank()
                             if (!inputError) {
                                 CoroutineScope(Dispatchers.IO).launch {
-                                    todoTaskDao?.addTodo(
-                                        todoTaskEntity = TodoTaskEntity(
+                                    addTodo(
+                                        TodoTask(
                                             isDone = false,
-                                            name = todoText
-                                        )
+                                            task = todoText
+                                        ).toEntity()
                                     )
                                 }
                                 Toast.makeText(context, "$todoText added.", Toast.LENGTH_SHORT)
@@ -83,11 +81,11 @@ fun AddTodoScreen(
         }
     })
 }
-
-@Preview
-@Composable
-fun AddTodoPreview() {
-    SimpleTodoAppTheme {
-        AddTodoScreen { }
-    }
-}
+//
+//@Preview
+//@Composable
+//fun AddTodoPreview() {
+//    SimpleTodoAppTheme {
+//        AddTodoScreen { }
+//    }
+//}

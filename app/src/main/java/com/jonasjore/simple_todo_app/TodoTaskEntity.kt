@@ -12,6 +12,7 @@ data class TodoTaskEntity(
 )
 
 fun TodoTask.toEntity() = TodoTaskEntity(
+    id = id,
     isDone = isDone,
     name = task
 )

@@ -13,46 +13,24 @@ import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCompositionContext
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.jonasjore.simple_todo_app.ui.theme.SimpleTodoAppTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-
-val todoList: List<TodoTask> = listOf(
-    TodoTask(isDone = false, "Gjøre lekse"),
-    TodoTask(isDone = true, "Runne resident evil village"),
-    TodoTask(isDone = false, "Jobbe videre med todo app"),
-    TodoTask(isDone = true, "Støvsuge"),
-    TodoTask(isDone = false, "Bære ved"),
-    TodoTask(isDone = true, "Vaske badet"),
-    TodoTask(isDone = true, "Oppvask kjøkken"),
-    TodoTask(isDone = true, "Lage kaffe"),
-)
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun TodoOverviewScreen(
-    todoTaskDao: TodoTaskDao? = null,
+    getTodos: () -> List<TodoTask>,
+    updateTodo: (Long, Boolean) -> Unit,
     addNewTodoRoute: () -> Unit,
     onBack: () -> Unit
 ) {
 
     val todos = remember {
-        mutableStateOf<List<TodoTaskEntity>?>(null)
+        mutableStateOf<List<TodoTask>?>(null)
     }
 
-    CoroutineScope(Dispatchers.IO).launch {
-        todos.value = todoTaskDao?.getAll()
-    }
+    todos.value = getTodos()
 
     Scaffold(
         topBar = { TodoAppTopBar(onBack = onBack) },
@@ -71,17 +49,17 @@ fun TodoOverviewScreen(
                 H3(text = "TODOs")
 
                 todos.value?.forEach {
-                    TodoCard(todoTask = it)
+                    TodoCard(todoTask = it.toEntity(), updateTodo = updateTodo)
                 }
             }
         }
     }
 }
 
-@Preview
-@Composable
-fun TodoOverviewScreenPreview() {
-    SimpleTodoAppTheme {
-        TodoOverviewScreen(addNewTodoRoute = { }, onBack = { })
-    }
-}
+//@Preview
+//@Composable
+//fun TodoOverviewScreenPreview() {
+//    SimpleTodoAppTheme {
+//        TodoOverviewScreen(addNewTodoRoute = { }, onBack = { })
+//    }
+//}

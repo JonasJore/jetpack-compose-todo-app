@@ -11,7 +11,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.room.Room
 import com.jonasjore.simple_todo_app.ui.theme.SimpleTodoAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -30,23 +29,20 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun NavigationComponent(navController: NavHostController, applicationContext: Context) {
-    val db: TodoDatabase = Room.databaseBuilder(
-        applicationContext,
-        TodoDatabase::class.java, "todo_database"
-    ).build()
-    val todoTaskDao = db.TodoTaskDao()
+    val repository = TodoRepository(applicationContext = applicationContext)
     NavHost(
         navController = navController,
         startDestination = Routes.todoOverView
     ) {
         composable(Routes.todoOverView) {
             TodoOverviewScreen(
-                todoTaskDao = todoTaskDao,
+                getTodos = repository::getAllTodos,
+                updateTodo = repository::updateTodo,
                 addNewTodoRoute = { navController.navigate(Routes.addNewTodo) },
             ) { navController.popBackStack() }
         }
         composable(Routes.addNewTodo) {
-            AddTodoScreen(todoTaskDao = todoTaskDao) { navController.popBackStack() }
+            AddTodoScreen(addTodo = repository::addTodo) { navController.popBackStack() }
         }
     }
 }
@@ -54,7 +50,21 @@ fun NavigationComponent(navController: NavHostController, applicationContext: Co
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
+    fun todoList(): List<TodoTask> = listOf(
+        TodoTask(isDone = false, task = "Gjøre lekse"),
+        TodoTask(isDone = true, task = "Runne resident evil village"),
+        TodoTask(isDone = false, task = "Jobbe videre med todo app"),
+        TodoTask(isDone = true, task = "Støvsuge"),
+        TodoTask(isDone = false, task = "Bære ved"),
+        TodoTask(isDone = true, task = "Vaske badet"),
+        TodoTask(isDone = true, task = "Oppvask kjøkken"),
+        TodoTask(isDone = true, task = "Lage kaffe"),
+    )
     SimpleTodoAppTheme {
-        TodoOverviewScreen(addNewTodoRoute = { }, onBack = { })
+        TodoOverviewScreen(
+            addNewTodoRoute = { },
+            onBack = { },
+            getTodos = { todoList() },
+            updateTodo = { l: Long, b: Boolean -> })
     }
 }
