@@ -38,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
 @ExperimentalMaterialApi
@@ -55,20 +56,16 @@ fun TodoOverviewScreen(
             *(getTodos().toTypedArray())
         )
     }
-
     Scaffold(
         topBar = { TodoAppTopBar(onBack = onBack) },
         floatingActionButton = {
             FloatingActionButton(onClick = addNewTodoRoute) {
-                Icon(Icons.Default.Add, "add todos")
+                Icon(Icons.Default.Add, stringResource(R.string.add_todo_icon_icon_description))
             }
         }) {
         Surface {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                item {
-                    H3(text = "TODOs")
-                }
-
+                item { H3(text = stringResource(id = R.string.todo_overview_header)) }
                 items(todos, key = { it.id }) { todo ->
                     val dismissState = rememberDismissState(
                         confirmStateChange = { dismissValue ->
@@ -107,7 +104,7 @@ fun TodoOverviewScreen(
                             ) {
                                 Icon(
                                     imageVector = icon,
-                                    contentDescription = "Icon",
+                                    contentDescription = stringResource(id = R.string.swipe_to_dismiss_action_icon_description),
                                     modifier = Modifier
                                         .scale(scale)
                                         .padding(end = 8.dp)

@@ -62,7 +62,7 @@ fun DefaultPreview() {
     fun todoList(): List<TodoTask> = listOf(
         TodoTask(
             isDone = false,
-            task = "Gjøre lekse",
+            task = "Gjøre lekser",
             id = r()
         ),
         TodoTask

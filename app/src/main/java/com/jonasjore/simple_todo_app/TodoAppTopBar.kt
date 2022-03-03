@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 
 @Composable
 fun TodoAppTopBar(onBack: () -> Unit) {
@@ -22,7 +23,7 @@ fun TodoAppTopBar(onBack: () -> Unit) {
             IconButton(onClick = onBack) {
                 Icon(Icons.Default.ArrowBack, contentDescription = null)
             }
-            Text(text = "Jonners' simple todo app")
+            Text(text = stringResource(id = R.string.todo_app_top_bar_header))
         }
     }
 }

@@ -1,3 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
+    <string name="add_todo_column_header_text">New TODO</string>
+    <string name="add_todo_icon_icon_description">add todos</string>
+    <string name="add_todo_submit_button_text">SUBMIT TODO</string>
+    <string name="add_todo_textfield_placeholder">New TODO</string>
+
     <string name="app_name">Simple-Todo-App</string>
+
+    <string name="swipe_to_dismiss_action_icon_description">Icon</string>
+
+    <string name="todo_app_top_bar_header">Jonners\' simple todo app</string>
+    <string name="todo_blank_todo_text_placeholder">BLANK</string>
+    <string name="todo_overview_header">TODOs</string>
 </resources>

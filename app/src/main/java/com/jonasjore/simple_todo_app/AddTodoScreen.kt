@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +37,7 @@ fun AddTodoScreen(
     Scaffold(topBar = { TodoAppTopBar(onBack = onBack) }, content = {
         Surface {
             Column {
-                H3(text = "New TODO")
+                H3(text = stringResource(id = R.string.add_todo_column_header_text))
                 TextField(
                     isError = inputError,
                     value = todoText,
@@ -44,7 +45,7 @@ fun AddTodoScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp),
-                    label = { Text("New TODO") }
+                    label = { Text(text = stringResource(R.string.add_todo_textfield_placeholder)) }
                 )
                 Row(
                     horizontalArrangement = Arrangement.Center,
@@ -67,7 +68,6 @@ fun AddTodoScreen(
                                     .show()
                                 todoText = ""
                             }
-
                         },
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = Color.Cyan,
@@ -75,18 +75,10 @@ fun AddTodoScreen(
                         ),
                         modifier = Modifier.padding(8.dp)
                     ) {
-                        Text("SUBMIT TODO")
+                        Text(text = stringResource(id = R.string.add_todo_submit_button_text))
                     }
                 }
             }
         }
     })
 }
-//
-//@Preview
-//@Composable
-//fun AddTodoPreview() {
-//    SimpleTodoAppTheme {
-//        AddTodoScreen { }
-//    }
-//}

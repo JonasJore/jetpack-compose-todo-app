@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
 @ExperimentalMaterialApi
@@ -48,35 +49,10 @@ fun TodoCard(
                 },
                 modifier = Modifier.padding(8.dp)
             )
-            Text(text = todoTask.name ?: "blank")
+            Text(
+                text = todoTask.name
+                    ?: stringResource(id = R.string.todo_blank_todo_text_placeholder)
+            )
         }
     }
 }
-
-//@Preview
-//@Composable
-//fun TodoPreview() {
-//    SimpleTodoAppTheme {
-//        TodoCard(
-//            todoTask = TodoTaskEntity(
-//                id = 32,
-//                isDone = true,
-//                name = "Get shit done"
-//            )
-//        ) { _: Int, _: Boolean -> }
-//    }
-//}
-//
-//@Preview
-//@Composable
-//fun TodoNotDonePreview() {
-//    SimpleTodoAppTheme {
-//        TodoCard(
-//            todoTask = TodoTaskEntity(
-//                id = 42,
-//                isDone = false,
-//                name = "Get more shit done"
-//            )
-//        ) { _: Int, _: Boolean -> }
-//    }
-//}
