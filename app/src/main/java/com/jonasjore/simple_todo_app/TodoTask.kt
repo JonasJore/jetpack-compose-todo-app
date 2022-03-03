@@ -1,13 +1,13 @@
 package com.jonasjore.simple_todo_app
 
 data class TodoTask(
-    val id: Long? = null,
+    val id: Int,
     val isDone: Boolean,
     val task: String
 )
 
 fun TodoTaskEntity.mapToTodoTask() = TodoTask(
-    id = id,
+    id = id ?: (0..9999).random(),
     isDone = isDone,
-    task = name ?: ""
+    task = name ?: "NONE"
 )

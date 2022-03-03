@@ -57,6 +57,7 @@ fun AddTodoScreen(
                                 CoroutineScope(Dispatchers.IO).launch {
                                     addTodo(
                                         TodoTask(
+                                            id = (0..9999).random(),
                                             isDone = false,
                                             task = todoText
                                         ).toEntity()

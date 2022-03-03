@@ -23,7 +23,7 @@ interface TodoTaskDao {
     fun addTodo(todoTaskEntity: TodoTaskEntity)
 
     @Query("UPDATE todotaskentity SET is_done = :isDone WHERE id = :id")
-    fun updateTodo(id: Long, isDone: Boolean)
+    fun updateTodo(id: Int, isDone: Boolean)
 
     @Delete
     fun deleteTodo(todoTaskEntity: TodoTaskEntity)

@@ -6,6 +6,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.util.UUID
 
 class TodoRepository(applicationContext: Context) {
     private var database: TodoDatabase
@@ -37,9 +38,15 @@ class TodoRepository(applicationContext: Context) {
         }
     }
 
-    fun updateTodo(id: Long, isDoneStatus: Boolean) {
+    fun updateTodo(id: Int, isDoneStatus: Boolean) {
         CoroutineScope(Dispatchers.IO).launch {
             todoTaskDao.updateTodo(id = id, isDone = isDoneStatus)
+        }
+    }
+
+    fun removeTodo(todoTaskEntity: TodoTaskEntity) {
+        CoroutineScope(Dispatchers.IO).launch {
+            todoTaskDao.deleteTodo(todoTaskEntity = todoTaskEntity)
         }
     }
 }

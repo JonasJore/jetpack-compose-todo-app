@@ -1,38 +1,60 @@
 package com.jonasjore.simple_todo_app
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
+import androidx.compose.material.DismissDirection
+import androidx.compose.material.DismissValue
+import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
+import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 
-// TODO: https://www.youtube.com/watch?v=wFR-WTtE-tw
-
+@ExperimentalMaterialApi
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun TodoOverviewScreen(
     getTodos: () -> List<TodoTask>,
-    updateTodo: (Long, Boolean) -> Unit,
+    updateTodo: (Int, Boolean) -> Unit,
+    deleteTodo: (todoTaskEntity: TodoTaskEntity) -> Unit,
     addNewTodoRoute: () -> Unit,
     onBack: () -> Unit
 ) {
-
     val todos = remember {
-        mutableStateOf<List<TodoTask>?>(null)
+        mutableStateListOf(
+            *(getTodos().toTypedArray())
+        )
     }
-
-    todos.value = getTodos()
 
     Scaffold(
         topBar = { TodoAppTopBar(onBack = onBack) },
@@ -42,26 +64,66 @@ fun TodoOverviewScreen(
             }
         }) {
         Surface {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    .verticalScroll(rememberScrollState())
-            ) {
-                H3(text = "TODOs")
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                item {
+                    H3(text = "TODOs")
+                }
 
-                todos.value?.forEach {
-                    TodoCard(todoTask = it.toEntity(), updateTodo = updateTodo)
+                items(todos, key = { it.id }) { todo ->
+                    val dismissState = rememberDismissState(
+                        confirmStateChange = { dismissValue ->
+                            if (dismissValue == DismissValue.DismissedToStart) {
+                                todos.remove(todo)
+                                deleteTodo(todo.toEntity())
+                            }
+                            true
+                        }
+                    )
+                    SwipeToDismiss(
+                        state = dismissState,
+                        directions = setOf(DismissDirection.EndToStart),
+                        dismissThresholds = { FractionalThreshold(.2f) },
+                        background = {
+                            val direction = dismissState.dismissDirection ?: return@SwipeToDismiss
+                            val color by animateColorAsState(
+                                targetValue = Color.Red
+                            )
+                            val icon = when (direction) {
+                                DismissDirection.StartToEnd -> Icons.Default.Done
+                                DismissDirection.EndToStart -> Icons.Default.Delete
+                            }
+                            val scale by animateFloatAsState(targetValue = if (dismissState.targetValue == DismissValue.Default) 0.8f else 1.2f)
+                            val alignment = when (direction) {
+                                DismissDirection.EndToStart -> Alignment.CenterEnd
+                                DismissDirection.StartToEnd -> Alignment.CenterStart
+                            }
+                            Box(
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .fillMaxSize()
+                                    .background(color),
+                                contentAlignment = alignment
+                            ) {
+                                Icon(
+                                    imageVector = icon,
+                                    contentDescription = "Icon",
+                                    modifier = Modifier
+                                        .scale(scale)
+                                        .padding(end = 8.dp)
+                                )
+                            }
+                        },
+                        dismissContent = {
+                            TodoCard(
+                                todoTask = todo.toEntity(),
+                                updateTodo = updateTodo,
+                                dismissState = dismissState
+                            )
+                        }
+                    )
                 }
             }
         }
     }
 }
-
-//@Preview
-//@Composable
-//fun TodoOverviewScreenPreview() {
-//    SimpleTodoAppTheme {
-//        TodoOverviewScreen(addNewTodoRoute = { }, onBack = { })
-//    }
-//}

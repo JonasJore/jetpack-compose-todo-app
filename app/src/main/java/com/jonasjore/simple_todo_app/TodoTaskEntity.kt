@@ -6,9 +6,12 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class TodoTaskEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long? = null,
-    @ColumnInfo(name = "is_done") val isDone: Boolean,
-    @ColumnInfo(name = "task_name") val name: String?
+    @PrimaryKey(autoGenerate = true)
+    val id: Int? = null,
+    @ColumnInfo(name = "is_done")
+    val isDone: Boolean,
+    @ColumnInfo(name = "task_name")
+    val name: String?
 )
 
 fun TodoTask.toEntity() = TodoTaskEntity(
