@@ -2,21 +2,16 @@ package com.jonasjore.simple_todo_app
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.DismissDirection
 import androidx.compose.material.DismissValue
-import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.FractionalThreshold
@@ -81,16 +76,21 @@ fun TodoOverviewScreen(
                         directions = setOf(DismissDirection.EndToStart),
                         dismissThresholds = { FractionalThreshold(.2f) },
                         background = {
-                            val direction = dismissState.dismissDirection ?: return@SwipeToDismiss
-                            val color by animateColorAsState(
+                            val dismissDirection =
+                                dismissState.dismissDirection ?: return@SwipeToDismiss
+                            val dismissBoxColor by animateColorAsState(
                                 targetValue = Color.Red
                             )
-                            val icon = when (direction) {
+                            val dismissIcon = when (dismissDirection) {
                                 DismissDirection.StartToEnd -> Icons.Default.Done
                                 DismissDirection.EndToStart -> Icons.Default.Delete
                             }
-                            val scale by animateFloatAsState(targetValue = if (dismissState.targetValue == DismissValue.Default) 0.8f else 1.2f)
-                            val alignment = when (direction) {
+                            val dismissIconScale by animateFloatAsState(
+                                targetValue = if (dismissState.targetValue == DismissValue.Default)
+                                    0.8f
+                                else 1.2f
+                            )
+                            val dismissContentAlignment = when (dismissDirection) {
                                 DismissDirection.EndToStart -> Alignment.CenterEnd
                                 DismissDirection.StartToEnd -> Alignment.CenterStart
                             }
@@ -99,14 +99,14 @@ fun TodoOverviewScreen(
                                     .padding(8.dp)
                                     .clip(RoundedCornerShape(8.dp))
                                     .fillMaxSize()
-                                    .background(color),
-                                contentAlignment = alignment
+                                    .background(dismissBoxColor),
+                                contentAlignment = dismissContentAlignment
                             ) {
                                 Icon(
-                                    imageVector = icon,
+                                    imageVector = dismissIcon,
                                     contentDescription = stringResource(id = R.string.swipe_to_dismiss_action_icon_description),
                                     modifier = Modifier
-                                        .scale(scale)
+                                        .scale(dismissIconScale)
                                         .padding(end = 8.dp)
                                 )
                             }
