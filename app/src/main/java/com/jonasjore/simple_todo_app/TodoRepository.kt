@@ -1,24 +1,12 @@
 package com.jonasjore.simple_todo_app
 
-import android.content.Context
-import androidx.room.Room
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.util.UUID
+import javax.inject.Inject
 
-class TodoRepository(applicationContext: Context) {
-    private var database: TodoDatabase
-    private var todoTaskDao: TodoTaskDao
-
-    init {
-        database = Room.databaseBuilder(
-            applicationContext,
-            TodoDatabase::class.java, "todo_database"
-        ).build()
-        todoTaskDao = database.TodoTaskDao()
-    }
+class TodoRepository @Inject constructor(var todoTaskDao: TodoTaskDao) {
 
     fun getAllTodos(): List<TodoTask> {
         var todos: List<TodoTask>? = null

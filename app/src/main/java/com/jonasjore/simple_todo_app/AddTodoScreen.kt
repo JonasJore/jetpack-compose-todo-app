@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun AddTodoScreen(
-    addTodo: (TodoTaskEntity) -> Unit,
+    addTodo: (TodoTask) -> Unit,
     onBack: () -> Unit
 ) {
     var todoText by remember { mutableStateOf("") }
@@ -65,7 +65,7 @@ fun AddTodoScreen(
                                                 id = (0..9999).random(), // TODO: autogeneration by entity class would be best..
                                                 isDone = false,
                                                 task = todoText
-                                            ).toEntity()
+                                            )
                                         )
                                     }
                                     Toast.makeText(

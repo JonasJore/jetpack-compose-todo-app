@@ -25,9 +25,11 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,22 +37,16 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 
 @ExperimentalMaterialApi
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun TodoOverviewScreen(
-    getTodos: () -> List<TodoTask>,
-    updateTodo: (Int, Boolean) -> Unit,
-    deleteTodo: (todoTaskEntity: TodoTaskEntity) -> Unit,
+    todoOverviewViewModel: TodoOverviewViewModel,
     addNewTodoRoute: () -> Unit,
     onBack: () -> Unit
 ) {
-    val todos = remember {
-        mutableStateListOf(
-            *(getTodos().toTypedArray())
-        )
-    }
     Scaffold(
         topBar = { TodoAppTopBar(onBack = onBack) },
         floatingActionButton = {
@@ -58,6 +54,7 @@ fun TodoOverviewScreen(
                 Icon(Icons.Default.Add, stringResource(R.string.add_todo_icon_icon_description))
             }
         }) {
+        val todos by remember { mutableStateOf(todoOverviewViewModel.todosState) }
         Surface {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 item { H3(text = stringResource(id = R.string.todo_overview_header)) }
@@ -66,7 +63,7 @@ fun TodoOverviewScreen(
                         confirmStateChange = { dismissValue ->
                             if (dismissValue == DismissValue.DismissedToStart) {
                                 todos.remove(todo)
-                                deleteTodo(todo.toEntity())
+                                todoOverviewViewModel.removeTodo(todo)
                             }
                             true
                         }
@@ -114,7 +111,7 @@ fun TodoOverviewScreen(
                         dismissContent = {
                             TodoCard(
                                 todoTask = todo.toEntity(),
-                                updateTodo = updateTodo,
+                                updateTodo = todoOverviewViewModel::updateTodo,
                                 dismissState = dismissState
                             )
                         }
@@ -122,5 +119,6 @@ fun TodoOverviewScreen(
                 }
             }
         }
+
     }
 }
