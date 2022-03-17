@@ -1,4 +1,4 @@
-package com.jonasjore.simple_todo_app
+package com.jonasjore.simple_todo_app.ui.composables.headers
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme

@@ -1,4 +1,4 @@
-package com.jonasjore.simple_todo_app
+package com.jonasjore.simple_todo_app.data
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

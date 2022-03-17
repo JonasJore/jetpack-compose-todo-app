@@ -1,5 +1,7 @@
-package com.jonasjore.simple_todo_app
+package com.jonasjore.simple_todo_app.data
 
+import com.jonasjore.simple_todo_app.domain.TodoTask
+import com.jonasjore.simple_todo_app.domain.mapToTodoTask
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

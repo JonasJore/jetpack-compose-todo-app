@@ -7,11 +7,11 @@ import androidx.activity.viewModels
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.jonasjore.simple_todo_app.navigation.Routes
 import com.jonasjore.simple_todo_app.ui.theme.SimpleTodoAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 

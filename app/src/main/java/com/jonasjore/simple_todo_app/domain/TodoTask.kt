@@ -1,4 +1,6 @@
-package com.jonasjore.simple_todo_app
+package com.jonasjore.simple_todo_app.domain
+
+import com.jonasjore.simple_todo_app.data.TodoTaskEntity
 
 data class TodoTask(
     val id: Int,

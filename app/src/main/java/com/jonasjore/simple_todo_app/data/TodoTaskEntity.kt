@@ -1,8 +1,9 @@
-package com.jonasjore.simple_todo_app
+package com.jonasjore.simple_todo_app.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.jonasjore.simple_todo_app.domain.TodoTask
 
 @Entity
 data class TodoTaskEntity(

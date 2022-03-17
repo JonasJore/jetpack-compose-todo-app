@@ -3,6 +3,9 @@ package com.jonasjore.simple_todo_app
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
+import com.jonasjore.simple_todo_app.data.TodoRepository
+import com.jonasjore.simple_todo_app.data.toEntity
+import com.jonasjore.simple_todo_app.domain.TodoTask
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

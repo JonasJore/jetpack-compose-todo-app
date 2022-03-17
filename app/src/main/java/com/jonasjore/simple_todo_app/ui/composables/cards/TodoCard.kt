@@ -1,4 +1,4 @@
-package com.jonasjore.simple_todo_app
+package com.jonasjore.simple_todo_app.ui.composables.cards
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +20,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jonasjore.simple_todo_app.R
+import com.jonasjore.simple_todo_app.data.TodoTaskEntity
 
 @ExperimentalMaterialApi
 @Composable

@@ -25,11 +25,9 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,7 +35,10 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
+import com.jonasjore.simple_todo_app.data.toEntity
+import com.jonasjore.simple_todo_app.ui.composables.cards.TodoCard
+import com.jonasjore.simple_todo_app.ui.composables.headers.H3
+import com.jonasjore.simple_todo_app.ui.composables.topbar.TodoAppTopBar
 
 @ExperimentalMaterialApi
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -57,7 +58,9 @@ fun TodoOverviewScreen(
         val todos by remember { mutableStateOf(todoOverviewViewModel.todosState) }
         Surface {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                item { H3(text = stringResource(id = R.string.todo_overview_header)) }
+                item {
+                    H3(text = stringResource(id = R.string.todo_overview_header))
+                }
                 items(todos, key = { it.id }) { todo ->
                     val dismissState = rememberDismissState(
                         confirmStateChange = { dismissValue ->

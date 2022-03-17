@@ -2,10 +2,9 @@ package com.jonasjore.simple_todo_app.di.module
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
-import com.jonasjore.simple_todo_app.TodoDatabase
-import com.jonasjore.simple_todo_app.TodoRepository
-import com.jonasjore.simple_todo_app.TodoTaskDao
+import com.jonasjore.simple_todo_app.data.TodoDatabase
+import com.jonasjore.simple_todo_app.data.TodoRepository
+import com.jonasjore.simple_todo_app.data.TodoTaskDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,15 +20,6 @@ class TodoOverviewModule {
     @Singleton
     fun provideTodoRepository(@ApplicationContext appContext: Context): TodoRepository {
         return TodoRepository(todoTaskDao = provideDao(appContext = appContext))
-    }
-
-    @Provides
-    @Singleton
-    fun provideRoomDatabase(@ApplicationContext appContext: Context): RoomDatabase {
-        return Room.databaseBuilder(
-            appContext,
-            TodoDatabase::class.java, "todo_database"
-        ).build()
     }
 
     @Provides

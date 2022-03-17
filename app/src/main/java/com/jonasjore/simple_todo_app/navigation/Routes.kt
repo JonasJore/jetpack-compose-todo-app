@@ -1,4 +1,4 @@
-package com.jonasjore.simple_todo_app
+package com.jonasjore.simple_todo_app.navigation
 
 object Routes {
     const val todoOverView = "todoOverview"
