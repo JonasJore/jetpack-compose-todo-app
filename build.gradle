@@ -3,6 +3,7 @@ buildscript {
         compose_version = '1.1.0'
         room_version = '2.4.1'
         hilt_version = '2.38.1'
+        accompanist_version = '0.24.5-alpha'
     }
 
     dependencies {
